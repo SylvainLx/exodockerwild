@@ -1,0 +1,26 @@
+services:
+  server:
+    build: ./server
+    ports:
+      - 8000:8080
+    command: npm run dev
+    volumes:
+      - ./server/src/:/app/server/src/
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo
+    volumes:
+      - ./data:/data/db
+
+  client:
+    build: ./client/client
+    ports:
+      - 3000:3000
+    command: npm start
+    volumes:
+      - ./client/client/src/:/app/src/
+      - ./client/client/public/:/app/public/
+    depends_on:
+      - server
